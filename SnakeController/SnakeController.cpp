@@ -87,7 +87,7 @@ bool Controller::isFoodCollideWithSnake(const Snake::FoodResp& requestedFood) co
 void Controller::receive(std::unique_ptr<Event> e)
 {
     try {
-        auto const& timerEvent = *dynamic_cast<EventT<TimeoutInd> const&>(*e);
+        dynamic_cast<EventT<TimeoutInd> const&>(*e);
 
         Segment const& currentHead = m_segments.front();
 
