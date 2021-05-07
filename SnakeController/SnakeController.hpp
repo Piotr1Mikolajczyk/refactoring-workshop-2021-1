@@ -51,6 +51,7 @@ private:
     std::list<Segment> m_segments;
 
     bool isHeadCollidedWithSegment(const Segment&) const;
+    bool isFoodCollideWithSnake(const Snake::FoodResp&) const;
 };
 
 } // namespace Snake
