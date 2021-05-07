@@ -179,9 +179,7 @@ void Controller::receive(std::unique_ptr<Event> e)
                 try {
                     auto requestedFood = *dynamic_cast<EventT<FoodResp> const&>(*e);
 
-                    bool requestedFoodCollidedWithSnake = isFoodCollideWithSnake(requestedFood);
-
-                    if (requestedFoodCollidedWithSnake) {
+                    if (isFoodCollideWithSnake(requestedFood)) {
                         m_foodPort.send(std::make_unique<EventT<FoodReq>>());
                     } else {
                         DisplayInd placeNewFood;
