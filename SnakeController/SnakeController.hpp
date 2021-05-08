@@ -10,6 +10,13 @@
 class Event;
 class IPort;
 
+struct Segment
+{
+    int x;
+    int y;
+    int ttl;
+};
+
 namespace Snake
 {
 struct ConfigurationError : std::logic_error
@@ -33,12 +40,7 @@ public:
     void receive(std::unique_ptr<Event> e) override;
 
 private:
-    struct Segment
-    {
-        int x;
-        int y;
-        int ttl;
-    };
+
 
     IPort& m_displayPort;
     IPort& m_foodPort;
