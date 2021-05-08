@@ -84,18 +84,23 @@ bool Controller::isFoodCollideWithSnake(const Snake::FoodResp& requestedFood) co
     return false;
 }
 
+Segment Controller::getNewHead() const 
+{
+    Segment const& currentHead = m_segments.front();
+
+    Segment newHead;
+    newHead.x = currentHead.x + ((m_currentDirection & Direction_LEFT) ? (m_currentDirection & Direction_DOWN) ? 1 : -1 : 0);
+    newHead.y = currentHead.y + (not (m_currentDirection & Direction_LEFT) ? (m_currentDirection & Direction_DOWN) ? 1 : -1 : 0);
+    newHead.ttl = currentHead.ttl;
+    return newHead;
+}
+
 void Controller::receive(std::unique_ptr<Event> e)
 {
     try {
         dynamic_cast<EventT<TimeoutInd> const&>(*e);
 
-        Segment const& currentHead = m_segments.front();
-
-        Segment newHead;
-        newHead.x = currentHead.x + ((m_currentDirection & Direction_LEFT) ? (m_currentDirection & Direction_DOWN) ? 1 : -1 : 0);
-
-        newHead.y = currentHead.y + (not (m_currentDirection & Direction_LEFT) ? (m_currentDirection & Direction_DOWN) ? 1 : -1 : 0);
-        newHead.ttl = currentHead.ttl;
+        Segment newHead = getNewHead();
 
         bool lost = isHeadCollidedWithSegment(newHead);
 
