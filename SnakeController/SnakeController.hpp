@@ -10,15 +10,15 @@
 class Event;
 class IPort;
 
-struct Segment
-{
-    int x;
-    int y;
-    int ttl;
-};
-
 namespace Snake
 {
+    struct Segment
+    {
+        int x;
+        int y;
+        int ttl;
+    };
+
     struct ConfigurationError : std::logic_error
     {
         ConfigurationError();
