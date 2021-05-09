@@ -59,7 +59,7 @@ namespace Snake
             {
                 Segment seg;
                 istr >> seg.x >> seg.y;
-                seg.ttl = length--;
+                seg.timeToLive = length--;
 
                 m_segments.push_back(seg);
             }
@@ -89,7 +89,7 @@ namespace Snake
         Segment newHead;
         newHead.x = currentHead.x + ((m_currentDirection & Direction_LEFT) ? (m_currentDirection & Direction_DOWN) ? 1 : -1 : 0);
         newHead.y = currentHead.y + (not(m_currentDirection & Direction_LEFT) ? (m_currentDirection & Direction_DOWN) ? 1 : -1 : 0);
-        newHead.ttl = currentHead.ttl;
+        newHead.timeToLive = currentHead.timeToLive;
         return newHead;
     }
 
@@ -104,7 +104,7 @@ namespace Snake
     {
         for (auto &segment : m_segments)
         {
-            if (--segment.ttl == 0)
+            if (--segment.timeToLive == 0)
             {
                 DisplayInd l_evt{segment.x, segment.y, Cell_FREE};
                 m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
@@ -142,7 +142,7 @@ namespace Snake
             std::remove_if(
                 m_segments.begin(),
                 m_segments.end(),
-                [](auto const &segment) { return segment.ttl == 0; }),
+                [](auto const &segment) { return segment.timeToLive == 0; }),
             m_segments.end());
     }
 

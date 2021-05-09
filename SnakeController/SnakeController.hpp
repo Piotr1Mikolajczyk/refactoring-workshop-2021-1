@@ -16,7 +16,7 @@ namespace Snake
     {
         int x;
         int y;
-        int ttl;
+        int timeToLive;
     };
 
     struct ConfigurationError : std::logic_error
