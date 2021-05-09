@@ -197,16 +197,10 @@ namespace Snake
         }
         else
         {
-            DisplayInd clearOldFood;
-            clearOldFood.x = m_foodPosition.first;
-            clearOldFood.y = m_foodPosition.second;
-            clearOldFood.value = Cell_FREE;
+            DisplayInd clearOldFood{m_foodPosition.first, m_foodPosition.second, Cell_FREE};
             m_displayPort.send(std::make_unique<EventT<DisplayInd>>(clearOldFood));
 
-            DisplayInd placeNewFood;
-            placeNewFood.x = receivedFood.x;
-            placeNewFood.y = receivedFood.y;
-            placeNewFood.value = Cell_FOOD;
+            DisplayInd placeNewFood{receivedFood.x, receivedFood.y, Cell_FOOD};
             m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewFood));
         }
 
@@ -223,10 +217,7 @@ namespace Snake
         }
         else
         {
-            DisplayInd placeNewFood;
-            placeNewFood.x = requestedFood.x;
-            placeNewFood.y = requestedFood.y;
-            placeNewFood.value = Cell_FOOD;
+            DisplayInd placeNewFood{requestedFood.x, requestedFood.y, Cell_FOOD};
             m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewFood));
         }
 
