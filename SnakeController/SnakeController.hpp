@@ -54,7 +54,8 @@ private:
 
     bool isHeadCollidedWithSegment(const Segment&) const;
     bool isFoodCollideWithSnake(const Snake::FoodResp&) const;
-    Segment getNewHead() const ;
+    Segment getNewHead() const;
+    void handleTimeOutEvent(const Event&);
 };
 
 } // namespace Snake
