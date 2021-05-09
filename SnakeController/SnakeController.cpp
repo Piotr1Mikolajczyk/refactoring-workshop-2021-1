@@ -112,54 +112,54 @@ namespace Snake
 
         Segment newHead = getNewHead();
 
-        bool lost = isHeadCollidedWithSegment(newHead);
+        if (isHeadCollidedWithSegment(newHead))
+        {
+            return;
+        }
 
-        if (!lost && (newHead.x < 0 or newHead.y < 0 or
-                      newHead.x >= m_mapDimension.first or
-                      newHead.y >= m_mapDimension.second))
+        if (newHead.x < 0 or newHead.y < 0 or
+            newHead.x >= m_mapDimension.first or
+            newHead.y >= m_mapDimension.second)
         {
             m_scorePort.send(std::make_unique<EventT<LooseInd>>());
             return;
         }
 
-        if (not lost)
+        if (std::make_pair(newHead.x, newHead.y) == m_foodPosition)
         {
-            if (std::make_pair(newHead.x, newHead.y) == m_foodPosition)
+            m_scorePort.send(std::make_unique<EventT<ScoreInd>>());
+            m_foodPort.send(std::make_unique<EventT<FoodReq>>());
+        }
+        else
+        {
+            for (auto &segment : m_segments)
             {
-                m_scorePort.send(std::make_unique<EventT<ScoreInd>>());
-                m_foodPort.send(std::make_unique<EventT<FoodReq>>());
-            }
-            else
-            {
-                for (auto &segment : m_segments)
+                if (--segment.ttl <= 0)
                 {
-                    if (--segment.ttl <= 0)
-                    {
-                        DisplayInd l_evt;
-                        l_evt.x = segment.x;
-                        l_evt.y = segment.y;
-                        l_evt.value = Cell_FREE;
+                    DisplayInd l_evt;
+                    l_evt.x = segment.x;
+                    l_evt.y = segment.y;
+                    l_evt.value = Cell_FREE;
 
-                        m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
-                    }
+                    m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
                 }
             }
-
-            m_segments.push_front(newHead);
-            DisplayInd placeNewHead;
-            placeNewHead.x = newHead.x;
-            placeNewHead.y = newHead.y;
-            placeNewHead.value = Cell_SNAKE;
-
-            m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewHead));
-
-            m_segments.erase(
-                std::remove_if(
-                    m_segments.begin(),
-                    m_segments.end(),
-                    [](auto const &segment) { return segment.ttl <= 0; }),
-                m_segments.end());
         }
+
+        m_segments.push_front(newHead);
+        DisplayInd placeNewHead;
+        placeNewHead.x = newHead.x;
+        placeNewHead.y = newHead.y;
+        placeNewHead.value = Cell_SNAKE;
+
+        m_displayPort.send(std::make_unique<EventT<DisplayInd>>(placeNewHead));
+
+        m_segments.erase(
+            std::remove_if(
+                m_segments.begin(),
+                m_segments.end(),
+                [](auto const &segment) { return segment.ttl <= 0; }),
+            m_segments.end());
     }
 
     void Controller::handleDirectionEvent(const Event &e)
