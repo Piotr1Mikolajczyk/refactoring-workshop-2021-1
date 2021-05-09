@@ -121,7 +121,7 @@ namespace Snake
         {
             for (auto &segment : m_segments)
             {
-                if (--segment.ttl <= 0)
+                if (--segment.ttl == 0)
                 {
                     DisplayInd l_evt;
                     l_evt.x = segment.x;
@@ -141,7 +141,7 @@ namespace Snake
             std::remove_if(
                 m_segments.begin(),
                 m_segments.end(),
-                [](auto const &segment) { return segment.ttl <= 0; }),
+                [](auto const &segment) { return segment.ttl == 0; }),
             m_segments.end());
     }
 
