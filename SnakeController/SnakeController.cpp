@@ -152,7 +152,7 @@ void Controller::handleDirectionEvent(const Event &e)
     }
 }
 
-void Controller::handleFoodEvent(const Event &e)
+void Controller::handleReceiveFoodEvent(const Event &e)
 {
     auto receivedFood = *dynamic_cast<EventT<FoodInd> const&>(e);
 
@@ -192,7 +192,7 @@ void Controller::receive(std::unique_ptr<Event> e)
             handleDirectionEvent(*e);
         } catch (std::bad_cast&) {
             try {
-                handleFoodEvent(*e);
+                handleReceiveFoodEvent(*e);
             } catch (std::bad_cast&) {
                 try {
                     auto requestedFood = *dynamic_cast<EventT<FoodResp> const&>(*e);
