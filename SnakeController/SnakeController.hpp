@@ -57,6 +57,7 @@ private:
     Segment getNewHead() const;
     void handleTimeOutEvent(const Event&);
     void handleDirectionEvent(const Event&);
+    void handleFoodEvent(const Event&);
 };
 
 } // namespace Snake
