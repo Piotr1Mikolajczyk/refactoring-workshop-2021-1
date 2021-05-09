@@ -93,11 +93,11 @@ namespace Snake
         return newHead;
     }
 
-    bool Controller::isHeadOutOfMap(const Segment &head) const
+    bool Controller::isSegmentOutOfMap(const Segment &seg) const
     {
-        return head.x < 0 or head.y < 0 ||
-               head.x >= m_mapDimension.first ||
-               head.y >= m_mapDimension.second;
+        return seg.x < 0 or seg.y < 0 ||
+               seg.x >= m_mapDimension.first ||
+               seg.y >= m_mapDimension.second;
     }
 
     void Controller::handleTimeOutEvent(const Event &e)
@@ -106,7 +106,7 @@ namespace Snake
 
         Segment newHead = getNewHead();
 
-        if (isElementCollidingWithSnake(newHead.x, newHead.y) || isHeadOutOfMap(newHead))
+        if (isElementCollidingWithSnake(newHead.x, newHead.y) || isSegmentOutOfMap(newHead))
         {
             m_scorePort.send(std::make_unique<EventT<LooseInd>>());
             return;
