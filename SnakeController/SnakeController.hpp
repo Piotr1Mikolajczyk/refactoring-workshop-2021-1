@@ -19,46 +19,44 @@ struct Segment
 
 namespace Snake
 {
-struct ConfigurationError : std::logic_error
-{
-    ConfigurationError();
-};
+    struct ConfigurationError : std::logic_error
+    {
+        ConfigurationError();
+    };
 
-struct UnexpectedEventException : std::runtime_error
-{
-    UnexpectedEventException();
-};
+    struct UnexpectedEventException : std::runtime_error
+    {
+        UnexpectedEventException();
+    };
 
-class Controller : public IEventHandler
-{
-public:
-    Controller(IPort& p_displayPort, IPort& p_foodPort, IPort& p_scorePort, std::string const& p_config);
+    class Controller : public IEventHandler
+    {
+    public:
+        Controller(IPort &p_displayPort, IPort &p_foodPort, IPort &p_scorePort, std::string const &p_config);
 
-    Controller(Controller const& p_rhs) = delete;
-    Controller& operator=(Controller const& p_rhs) = delete;
+        Controller(Controller const &p_rhs) = delete;
+        Controller &operator=(Controller const &p_rhs) = delete;
 
-    void receive(std::unique_ptr<Event> e) override;
+        void receive(std::unique_ptr<Event> e) override;
 
-private:
+    private:
+        IPort &m_displayPort;
+        IPort &m_foodPort;
+        IPort &m_scorePort;
 
+        std::pair<int, int> m_mapDimension;
+        std::pair<int, int> m_foodPosition;
 
-    IPort& m_displayPort;
-    IPort& m_foodPort;
-    IPort& m_scorePort;
+        Direction m_currentDirection;
+        std::list<Segment> m_segments;
 
-    std::pair<int, int> m_mapDimension;
-    std::pair<int, int> m_foodPosition;
-
-    Direction m_currentDirection;
-    std::list<Segment> m_segments;
-
-    bool isHeadCollidedWithSegment(const Segment&) const;
-    bool isFoodCollideWithSnake(const Snake::FoodResp&) const;
-    Segment getNewHead() const;
-    void handleTimeOutEvent(const Event&);
-    void handleDirectionEvent(const Event&);
-    void handleReceiveFoodEvent(const Event&);
-    void handleRequestFoodEvent(const Event&);
-};
+        bool isHeadCollidedWithSegment(const Segment &) const;
+        bool isFoodCollideWithSnake(const Snake::FoodResp &) const;
+        Segment getNewHead() const;
+        void handleTimeOutEvent(const Event &);
+        void handleDirectionEvent(const Event &);
+        void handleReceiveFoodEvent(const Event &);
+        void handleRequestFoodEvent(const Event &);
+    };
 
 } // namespace Snake
