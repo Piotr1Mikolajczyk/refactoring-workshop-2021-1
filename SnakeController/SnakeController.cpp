@@ -83,18 +83,6 @@ namespace Snake
         return false;
     }
 
-    bool Controller::isFoodCollideWithSnake(const Snake::FoodResp &requestedFood) const
-    {
-        for (auto const &segment : m_segments)
-        {
-            if (segment.x == requestedFood.x and segment.y == requestedFood.y)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     bool Controller::isElementCollidingWithSnake(int x, int y) const
     {
         for (auto const &segment : m_segments)
@@ -213,7 +201,7 @@ namespace Snake
     {
         auto requestedFood = *dynamic_cast<EventT<FoodResp> const &>(e);
 
-        if (isFoodCollideWithSnake(requestedFood))
+        if (isElementCollidingWithSnake(requestedFood.x, requestedFood.y))
         {
             m_foodPort.send(std::make_unique<EventT<FoodReq>>());
         }

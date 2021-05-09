@@ -51,7 +51,6 @@ namespace Snake
         std::list<Segment> m_segments;
 
         bool isHeadCollidedWithSegment(const Segment &) const;
-        bool isFoodCollideWithSnake(const Snake::FoodResp &) const;
         bool isElementCollidingWithSnake(int x, int y) const;
         Segment getNewHead() const;
         bool isHeadOutOfMap(const Segment &) const;
