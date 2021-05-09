@@ -100,6 +100,18 @@ namespace Snake
                seg.y >= m_mapDimension.second;
     }
 
+    void Controller::cleanUpApropriateSegments()
+    {
+        for (auto &segment : m_segments)
+        {
+            if (--segment.ttl == 0)
+            {
+                DisplayInd l_evt{segment.x, segment.y, Cell_FREE};
+                m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
+            }
+        }
+    }
+
     void Controller::handleTimeOutEvent(const Event &e)
     {
         dynamic_cast<EventT<TimeoutInd> const &>(e);
@@ -119,18 +131,7 @@ namespace Snake
         }
         else
         {
-            for (auto &segment : m_segments)
-            {
-                if (--segment.ttl == 0)
-                {
-                    DisplayInd l_evt;
-                    l_evt.x = segment.x;
-                    l_evt.y = segment.y;
-                    l_evt.value = Cell_FREE;
-
-                    m_displayPort.send(std::make_unique<EventT<DisplayInd>>(l_evt));
-                }
-            }
+            cleanUpApropriateSegments();
         }
 
         m_segments.push_front(newHead);
