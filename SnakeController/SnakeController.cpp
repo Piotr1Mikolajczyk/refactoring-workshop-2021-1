@@ -106,6 +106,13 @@ namespace Snake
         return newHead;
     }
 
+    bool Controller::isHeadOutOfMap(const Segment &head) const
+    {
+        return head.x < 0 or head.y < 0 ||
+               head.x >= m_mapDimension.first ||
+               head.y >= m_mapDimension.second;
+    }
+
     void Controller::handleTimeOutEvent(const Event &e)
     {
         dynamic_cast<EventT<TimeoutInd> const &>(e);
@@ -117,9 +124,7 @@ namespace Snake
             return;
         }
 
-        if (newHead.x < 0 or newHead.y < 0 or
-            newHead.x >= m_mapDimension.first or
-            newHead.y >= m_mapDimension.second)
+        if (isHeadOutOfMap(newHead))
         {
             m_scorePort.send(std::make_unique<EventT<LooseInd>>());
             return;
