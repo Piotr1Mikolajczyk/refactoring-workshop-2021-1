@@ -56,6 +56,7 @@ private:
     bool isFoodCollideWithSnake(const Snake::FoodResp&) const;
     Segment getNewHead() const;
     void handleTimeOutEvent(const Event&);
+    void handleDirectionEvent(const Event&);
 };
 
 } // namespace Snake

@@ -143,17 +143,22 @@ void Controller::handleTimeOutEvent(const Event &e)
     }
 }
 
+void Controller::handleDirectionEvent(const Event &e)
+{
+    auto direction = dynamic_cast<EventT<DirectionInd> const&>(e)->direction;
+
+    if ((m_currentDirection & Direction_LEFT) != (direction & Direction_LEFT)) {
+        m_currentDirection = direction;
+    }
+}
+
 void Controller::receive(std::unique_ptr<Event> e)
 {
     try {
         handleTimeOutEvent(dynamic_cast<EventT<TimeoutInd> const&>(*e));
     } catch (std::bad_cast&) {
         try {
-            auto direction = dynamic_cast<EventT<DirectionInd> const&>(*e)->direction;
-
-            if ((m_currentDirection & Direction_LEFT) != (direction & Direction_LEFT)) {
-                m_currentDirection = direction;
-            }
+            handleDirectionEvent(*e);
         } catch (std::bad_cast&) {
             try {
                 auto receivedFood = *dynamic_cast<EventT<FoodInd> const&>(*e);
