@@ -97,6 +97,8 @@ Segment Controller::getNewHead() const
 
 void Controller::handleTimeOutEvent(const Event &e)
 {
+    dynamic_cast<EventT<TimeoutInd> const&>(e);
+
     Segment newHead = getNewHead();
 
     bool lost = isHeadCollidedWithSegment(newHead);
@@ -203,7 +205,7 @@ void Controller::handleRequestFoodEvent(const Event &e)
 void Controller::receive(std::unique_ptr<Event> e)
 {
     try {
-        handleTimeOutEvent(dynamic_cast<EventT<TimeoutInd> const&>(*e));
+        handleTimeOutEvent(*e);
     } catch (std::bad_cast&) {
         try {
             handleDirectionEvent(*e);
