@@ -58,6 +58,7 @@ private:
     void handleTimeOutEvent(const Event&);
     void handleDirectionEvent(const Event&);
     void handleReceiveFoodEvent(const Event&);
+    void handleRequestFoodEvent(const Event&);
 };
 
 } // namespace Snake
