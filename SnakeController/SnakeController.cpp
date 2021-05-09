@@ -70,19 +70,6 @@ namespace Snake
         }
     }
 
-    bool Controller::isHeadCollidedWithSegment(const Segment &newHead) const
-    {
-        for (auto segment : m_segments)
-        {
-            if (segment.x == newHead.x and segment.y == newHead.y)
-            {
-                m_scorePort.send(std::make_unique<EventT<LooseInd>>());
-                return true;
-            }
-        }
-        return false;
-    }
-
     bool Controller::isElementCollidingWithSnake(int x, int y) const
     {
         for (auto const &segment : m_segments)
@@ -119,12 +106,7 @@ namespace Snake
 
         Segment newHead = getNewHead();
 
-        if (isHeadCollidedWithSegment(newHead))
-        {
-            return;
-        }
-
-        if (isHeadOutOfMap(newHead))
+        if (isElementCollidingWithSnake(newHead.x, newHead.y) || isHeadOutOfMap(newHead))
         {
             m_scorePort.send(std::make_unique<EventT<LooseInd>>());
             return;

@@ -50,7 +50,6 @@ namespace Snake
         Direction m_currentDirection;
         std::list<Segment> m_segments;
 
-        bool isHeadCollidedWithSegment(const Segment &) const;
         bool isElementCollidingWithSnake(int x, int y) const;
         Segment getNewHead() const;
         bool isHeadOutOfMap(const Segment &) const;
