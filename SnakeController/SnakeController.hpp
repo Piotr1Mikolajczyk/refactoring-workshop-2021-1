@@ -52,6 +52,7 @@ namespace Snake
 
         bool isHeadCollidedWithSegment(const Segment &) const;
         bool isFoodCollideWithSnake(const Snake::FoodResp &) const;
+        bool isElementCollidingWithSnake(int x, int y) const;
         Segment getNewHead() const;
         bool isHeadOutOfMap(const Segment &) const;
         void handleTimeOutEvent(const Event &);
